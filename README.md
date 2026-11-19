@@ -42,82 +42,91 @@ In modern electronic commerce, visual representations are the primary driver of 
 
 ```mermaid
 flowchart TD
-    SELLER[Seller / Merchant] -.->|Submits Listing & Images| STORE[E-Commerce Platform / WooCommerce]
-    STORE -->|1. Listing Data, Images, Seller Stats| NEXORA[0.0 Image Similarity Fraud Detection Engine]
-    NEXORA -->|2. Risk Score, Risk Tier, Evidence Payload| STORE
-    PARTICIPATING[Participating Marketplaces] -->|3. Confirmed Fraud Fingerprints| NEXORA
-    NEXORA -->|4. Authorized Cross-Platform Matches| PARTICIPATING
-    NEXORA -->|5. Flagged Listings & Matched Image Evidence| MOD[Moderator / Admin Dashboard]
-    MOD -->|6. Review Decisions: Confirm Fraud / Dismiss| NEXORA
+    SELLER["Seller / Merchant"] -.->|"Submits Listing & Images"| STORE["E-Commerce Platform / WooCommerce"]
+    STORE -->|"1. Listing Data, Images, Seller Stats"| NEXORA["0.0 Image Similarity Fraud Detection Engine"]
+    NEXORA -->|"2. Risk Score, Risk Tier, Evidence Payload"| STORE
+    PARTICIPATING["Participating Marketplaces"] -->|"3. Confirmed Fraud Fingerprints"| NEXORA
+    NEXORA -->|"4. Authorized Cross-Platform Matches"| PARTICIPATING
+    NEXORA -->|"5. Flagged Listings & Matched Image Evidence"| MOD["Moderator / Admin Dashboard"]
+    MOD -->|"6. Review Decisions: Confirm Fraud / Dismiss"| NEXORA
 ```
 
 ### 2.2 Level 1 Logical Data Flow Diagram (DFD)
 
 ```mermaid
 flowchart TD
-    STORE[Integrated Store] -->|Listing & Images| P1[1.0 Receive & Validate Listing]
-    P1 -->|Store Record| D3[(D3: Listings & Sellers)]
-
-    P1 -->|Image File| P2[2.0 Detect Duplicate & Similar Images]
-    P2 <-->|Query & Index Vectors| D1[(D1: Fingerprints & FAISS Vectors)]
-    P2 <-->|Check Known Fraud Hashes| D2[(D2: Shared Fraud Intelligence)]
-
-    P1 -->|Image & EXIF| P3[3.0 Analyse Image Forensics & ELA]
-    P1 -->|Image & Title/Desc| P4[4.0 Check Image-Text Consistency]
-
-    D3 -->|Seller History| P5[5.0 Analyse Seller Behaviour]
-    P1 -->|Seller Reference| P5
-
-    P2 -->|Visual Similarity Score| P6[6.0 Assess Fraud Risk Engine]
-    P3 -->|Forensic Tampering Flags| P6
-    P4 -->|Consistency Score| P6
-    P5 -->|Velocity & Price Flags| P6
-
-    P6 -->|Calculate Risk & Evidence| D4[(D4: Risk & Evidence Log)]
-    P6 -->|Return Real-Time JSON| STORE
-
-    D4 -->|Flagged Cases Queue| P7[7.0 Review & Record Moderation Decision]
-    MOD[Moderator Dashboard] <-->|Inspect Matches & Decide| P7
-    P7 -->|If Confirmed Fraud| D2
+    STORE["Integrated Store"] -->|"Listing and Images"| P1["1.0 Receive and Validate Listing"]
+    P1 -->|"Store Record"| D3[("D3: Listings and Sellers")]
+    
+    P1 -->|"Image File"| P2["2.0 Detect Duplicate and Similar Images"]
+    P2 <-->|"Query and Index Vectors"| D1[("D1: Fingerprints and FAISS Vectors")]
+    P2 <-->|"Check Known Fraud Hashes"| D2[("D2: Shared Fraud Intelligence")]
+    
+    P1 -->|"Image and EXIF"| P3["3.0 Analyse Image Forensics and ELA"]
+    P1 -->|"Image and Text"| P4["4.0 Check Image-Text Consistency"]
+    
+    D3 -->|"Seller History"| P5["5.0 Analyse Seller Behaviour"]
+    P1 -->|"Seller Reference"| P5
+    
+    P2 -->|"Visual Similarity Score"| P6["6.0 Assess Fraud Risk Engine"]
+    P3 -->|"Forensic Tampering Flags"| P6
+    P4 -->|"Consistency Score"| P6
+    P5 -->|"Velocity and Price Flags"| P6
+    
+    P6 -->|"Calculate Risk and Evidence"| D4[("D4: Risk and Evidence Log")]
+    P6 -->|"Return Real-Time JSON"| STORE
+    
+    D4 -->|"Flagged Cases Queue"| P7["7.0 Review and Record Moderation Decision"]
+    MOD["Moderator Dashboard"] <-->|"Inspect Matches and Decide"| P7
+    P7 -->|"If Confirmed Fraud"| D2
 ```
 
 ### 2.3 Physical Architecture View
 
 ```mermaid
 flowchart LR
-    subgraph Client Tier
-        WC[WooCommerce Plugin<br/>PHP / WordPress Hook]
-        DEMO[Demo Marketplace<br/>React / Vite]
-        DASH[Moderator Dashboard<br/>React / Tailwind CSS]
+    subgraph Client_Tier["Client Tier"]
+        WC["WooCommerce Plugin<br/>PHP / WordPress Hook"]
+        DEMO["Demo Marketplace<br/>React / Vite"]
+        DASH["Moderator Dashboard<br/>React / Tailwind CSS"]
     end
 
-    subgraph API & Gateway Tier
-        NGINX[Reverse Proxy / SSL]
-        DRF[Django REST Framework<br/>API Gateway & JWT Auth]
+    subgraph API_Tier["API & Gateway Tier"]
+        NGINX["Reverse Proxy / SSL"]
+        DRF["Django REST Framework<br/>API Gateway & JWT Auth"]
     end
 
-    subgraph AI Fraud Analysis Services
-        PHASH[pHash Service<br/>OpenCV & ImageHash]
-        EMBED[Embedding Extractor<br/>PyTorch ResNet / CLIP]
-        FAISS_IDX[FAISS Vector Store<br/>IndexFlatIP / Cosine]
-        FORENSIC[Forensics & ELA<br/>Pillow / Metadata]
-        CLIP_TXT[Text-Image Matcher<br/>CLIP Multimodal Cosine]
-        BEHAVIOR[Behavior Service<br/>Listing Velocity & Price]
-        RISK_ENG[Risk Scorer Engine<br/>Explainable Aggregator]
+    subgraph AI_Services["AI Fraud Analysis Services"]
+        PHASH["pHash Service<br/>OpenCV & ImageHash"]
+        EMBED["Embedding Extractor<br/>PyTorch ResNet / CLIP"]
+        FAISS_IDX["FAISS Vector Store<br/>IndexFlatIP / Cosine"]
+        FORENSIC["Forensics & ELA<br/>Pillow / Metadata"]
+        CLIP_TXT["Text-Image Matcher<br/>CLIP Multimodal Cosine"]
+        BEHAVIOR["Behavior Service<br/>Listing Velocity & Price"]
+        RISK_ENG["Risk Scorer Engine<br/>Explainable Aggregator"]
     end
 
-    subgraph Storage Tier
-        PG[(PostgreSQL Database<br/>Listings & Intelligence)]
-        VEC[(FAISS Index File<br/>faiss_index.bin)]
-        FS[(Media File Storage<br/>Listing Images)]
+    subgraph Storage_Tier["Storage Tier"]
+        PG[("PostgreSQL Database<br/>Listings & Intelligence")]
+        VEC[("FAISS Index File<br/>faiss_index.bin")]
+        FS[("Media File Storage<br/>Listing Images")]
     end
 
-    WC & DEMO -->|REST API (HTTPS)| NGINX
-    DASH -->|REST API (HTTPS)| NGINX
+    WC -->|"REST API over HTTPS"| NGINX
+    DEMO -->|"REST API over HTTPS"| NGINX
+    DASH -->|"REST API over HTTPS"| NGINX
     NGINX --> DRF
-    DRF --> PHASH & EMBED & FORENSIC & CLIP_TXT & BEHAVIOR
+    DRF --> PHASH
+    DRF --> EMBED
+    DRF --> FORENSIC
+    DRF --> CLIP_TXT
+    DRF --> BEHAVIOR
     EMBED <--> FAISS_IDX
-    PHASH & EMBED & FORENSIC & CLIP_TXT & BEHAVIOR --> RISK_ENG
+    PHASH --> RISK_ENG
+    EMBED --> RISK_ENG
+    FORENSIC --> RISK_ENG
+    CLIP_TXT --> RISK_ENG
+    BEHAVIOR --> RISK_ENG
     RISK_ENG --> DRF
     DRF --> PG
     DRF --> FS
