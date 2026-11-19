@@ -7,7 +7,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![FAISS](https://img.shields.io/badge/FAISS-Vector%20Search-orange.svg)](https://faiss.ai/)
 
-**Author:** Emmanuel Kibet (P01/0339/2023)  
+**Author:** Emmanuel Kibet   
 **Institution:** Mama Ngina University College | Department of Computer Science (SPAS / CIT)  
 **Project Classification:** Bachelor of Science in Computer Science Final Project  
 **Target Completion:** 10 Weeks (50 Working Days)
