@@ -72,23 +72,7 @@ The system consists of four decoupled tiers:
 
 ---
 
-## 4. 10-Week Implementation Roadmap Summary
-
-The project is developed using an **Iterative and Incremental Development Model** across five distinct phases:
-
-| Phase | Timeline | Core Focus Area | Key Deliverables |
-|---|---|---|---|
-| **Phase 1** | Weeks 1–2 (Days 1–10) | Foundation & Domain Modeling | Architecture, environment, database schemas, synthetic image perturbation generator. |
-| **Phase 2** | Weeks 3–4 (Days 11–20) | Vision & Similarity Pipeline | Preprocessing, pHash/dHash, PyTorch deep embeddings, and FAISS vector index. |
-| **Phase 3** | Weeks 5–6 (Days 21–30) | Multi-Modal Analysis & Intelligence | Digital image forensics (ELA), CLIP text-image consistency, seller velocity analytics, shared intelligence. |
-| **Phase 4** | Weeks 7–8 (Days 31–40) | Risk Engine, REST APIs & Interfaces | Multi-signal risk aggregator, REST endpoints, WooCommerce plugin, React Moderator Dashboard. |
-| **Phase 5** | Weeks 9–10 (Days 41–50) | Demo Store, Testing & Benchmarking | Demonstration marketplace, concurrency testing, quantitative evaluation metrics, final project defense. |
-
-*For the complete day-by-day plan with daily tasks and acceptance criteria, see [Project Plan & Daily Targets](docs/project-plan.md).*
-
----
-
-## 5. Repository & Directory Organization
+## 4. Repository & Directory Organization
 
 ```
 Image-Similarity/
@@ -125,7 +109,7 @@ Image-Similarity/
 
 ---
 
-## 6. Target Performance Goals
+## 5. Target Performance Goals
 
 * **Exact Duplicate Precision:** $\ge 99.0\%$ (pHash Hamming distance $\le 5$)
 * **Near-Duplicate Recall (Transformed Copies):** $\ge 88.0\%$ (pHash + FAISS embeddings on crops, rotations, compression)
